@@ -66,6 +66,11 @@
         this._district.search(keyword, function(status, result) {//注意，api返回的格式不统一，在下面用三个条件分别处理
             if(status == 'no_data') return;
             var districtData = result.districtList[0];
+
+
+
+
+
             if (districtData.districtList) {
                 me.createSelectList(selectId, districtData.districtList);
               if(adcodeLevel == 'country') {
@@ -75,12 +80,31 @@
               if(adcodeLevel == 'province') {
               		var list = districtData.districtList;
                 	amapAdcode.createjson(list,citys);
+                    for (var i = provinces.length - 1; i >= 0; i--) {
+                        if (provinces[i].adcode == districtData.adcode) {
+                            provinces[i].areas = []
+                            amapAdcode.createjson(list,provinces[i].areas);
+                            break;
+                        }
+                    }
               }
               if(adcodeLevel == 'city') {
               		var list = districtData.districtList;
                 	amapAdcode.createjson(list,areas);
+                    for (var i = provinces.length - 1; i >= 0; i--) {
+                        if (provinces[i].areas) {
+                            for (var j = provinces[i].areas.length - 1; j >= 0; j--) {
+                                if (provinces[i].areas[j].adcode == districtData.adcode && provinces[i].areas[j].citycode == districtData.citycode) {
+                                    provinces[i].areas[j].areas = []
+                                    amapAdcode.createjson(list,provinces[i].areas[j].areas);
+                                    break;
+                                }
+                            }
+                        }
+                    }
               }
             } else if (districtData.districts) {
+                console.log(123);
                 me.createSelectList(selectId, districtData.districts);
                if(adcodeLevel == 'province') {
               		var list = districtData.districts;
