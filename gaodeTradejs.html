@@ -136,17 +136,18 @@
     }
     amapAdcode.createjson =  function(list, store) {
     	for (var i = 0, l = list.length, option; i < l; i++) {
-            		option = {};
-                  	option.citycode = list[i].citycode;
-                 	 option.adcode = list[i].adcode;
-                  option.name=list[i].name;
-                  option.level=list[i].level;
-                  if(option.level == 'province') {
-                    	this.search('province', option.adcode, 'city');
-                  } else if(option.level == 'city'){
-                    	this.search('city', option.adcode, 'district');
-                  }
-                  store.push(option);
+    		  option = {};
+          	  option.citycode = list[i].citycode;
+         	  option.adcode = list[i].adcode;
+              option.name=list[i].name;
+              option.center = list[i].center.lat + ',' + list[i].center.lng
+              option.level=list[i].level;
+              if(option.level == 'province') {
+                	this.search('province', option.adcode, 'city');
+              } else if(option.level == 'city'){
+                	this.search('city', option.adcode, 'district');
+              }
+              store.push(option);
        }
     }
     amapAdcode.createProvince();
